@@ -1,0 +1,46 @@
+rules_version = '2';
+
+// Paste this into Firebase console → Firestore → Rules, then Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function viaGoogle() {
+      return signedIn() && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+    function classDoc(code) {
+      return get(/databases/$(database)/documents/classes/$(code)).data;
+    }
+    function teaches(code) {
+      return signedIn() && classDoc(code).teacherUid == request.auth.uid;
+    }
+    function inClass(code) {
+      return signedIn() && exists(/databases/$(database)/documents/classes/$(code)/students/$(request.auth.uid));
+    }
+
+    match /classes/{code} {
+      // Anyone can look up a class by its code (to join). Only its teacher can list or change it.
+      allow get: if true;
+      allow list: if signedIn() && resource.data.teacherUid == request.auth.uid;
+      allow create: if viaGoogle() && request.resource.data.teacherUid == request.auth.uid;
+      allow update: if signedIn() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.teacherUid == resource.data.teacherUid;
+      allow delete: if signedIn() && resource.data.teacherUid == request.auth.uid;
+
+      // A student's own progress: readable by them and their teacher, writable only by them.
+      match /students/{uid} {
+        allow read: if (signedIn() && request.auth.uid == uid) || teaches(code);
+        allow create, update: if signedIn() && request.auth.uid == uid && exists(/databases/$(database)/documents/classes/$(code));
+        allow delete: if teaches(code);
+      }
+
+      // Name, XP and level only. Classmates can see it only while the teacher has the leaderboard on.
+      match /leaderboard/{uid} {
+        allow read: if teaches(code) || (inClass(code) && classDoc(code).leaderboardOn == true);
+        allow create, update: if signedIn() && request.auth.uid == uid && inClass(code);
+        allow delete: if teaches(code) || (signedIn() && request.auth.uid == uid);
+      }
+    }
+  }
+}
