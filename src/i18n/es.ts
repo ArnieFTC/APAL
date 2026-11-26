@@ -65,6 +65,8 @@ export const es: Strings = {
 
   questionOf: 'Pregunta {i} de {n}',
   inARow: 'Seguidas: {n} / {goal}',
+  needHint: '¿Necesitas una pista?',
+  hintTitle: 'Pista:',
   checkAnswer: 'Comprobar',
   nextBox: 'Siguiente casilla →',
   next: 'Siguiente',

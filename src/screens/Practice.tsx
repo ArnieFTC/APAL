@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { displayAnswer, getSkill, makeQuestion, sameAnswer } from '../content';
+import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion, sameAnswer } from '../content';
 import type { Question, Skill } from '../content/types';
 import { NumberPad } from '../components/NumberPad';
 import { MathText, Toast } from '../components/ui';
@@ -39,7 +39,7 @@ export function PracticeRoute({ skillId, mode }: { skillId: string; mode: string
 }
 
 type Phase = 'answer' | 'hint' | 'resolved';
-type Feedback = 'invalid' | 'hint' | 'first' | 'second' | 'wrong' | null;
+type Feedback = 'invalid' | 'hint' | 'askedHint' | 'first' | 'second' | 'wrong' | null;
 /** Message keys, not translated text, so the screen follows a language switch. */
 type Summary = { title: StringKey; vars?: Record<string, number>; note?: StringKey; good: boolean };
 
@@ -49,7 +49,8 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   const timed = mode === 'check' || mode === 'review';
   const length = mode === 'check' ? CHECK_LENGTH : REVIEW_LENGTH;
 
-  const [question, setQuestion] = useState<Question>(() => makeQuestion(skill));
+  // Practice opens with a plain equation before any word problems.
+  const [question, setQuestion] = useState<Question>(() => (timed ? makeQuestion(skill) : makeFirstQuestion(skill)));
   const [input, setInput] = useState<string[]>(() => blank(question));
   const [phase, setPhase] = useState<Phase>('answer');
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -207,13 +208,25 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
         <MathText text={tl(question.template.prompt, question.vars)} />
       </section>
 
+      {!timed && phase === 'answer' && (
+        <button
+          className="button ghost hint-button"
+          onClick={() => {
+            // Asking for a hint counts like a miss: no streak, one more try.
+            setPhase('hint');
+            setFeedback('askedHint');
+          }}
+        >
+          💡 {t('needHint')}
+        </button>
+      )}
       {feedback && (
         <section className={`feedback feedback-${feedback}`} role="status">
           {feedback === 'invalid' && <p>{t('invalidAnswer')}</p>}
-          {feedback === 'hint' && (
+          {(feedback === 'hint' || feedback === 'askedHint') && (
             <>
               <p>
-                <strong>{t('notYetHint')}</strong>
+                <strong>{feedback === 'hint' ? t('notYetHint') : t('hintTitle')}</strong>
               </p>
               <p>{tl(question.template.hint, question.vars)}</p>
             </>

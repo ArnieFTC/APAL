@@ -67,6 +67,8 @@ export const ta: Strings = {
 
   questionOf: 'கேள்வி {i} / {n}',
   inARow: 'தொடர்ந்து சரி: {n} / {goal}',
+  needHint: 'உதவி வேண்டுமா?',
+  hintTitle: 'உதவி:',
   checkAnswer: 'சரிபார்',
   nextBox: 'அடுத்த கட்டம் →',
   next: 'அடுத்தது',

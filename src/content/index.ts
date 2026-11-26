@@ -30,6 +30,9 @@ export function makeQuestion(skill: Skill, lastTemplateId?: string, rng: Rng = m
   return build(skill, rng.pick(options), rng);
 }
 
+/** The opening question of a practice session: the skill's first, most straightforward type. */
+export const makeFirstQuestion = (skill: Skill, rng: Rng = makeRng()): Question => build(skill, skill.templates[0], rng);
+
 /**
  * A question for one row of a category board. Templates are listed easiest first,
  * so higher rows draw from later templates.

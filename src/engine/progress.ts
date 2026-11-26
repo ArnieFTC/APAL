@@ -124,7 +124,8 @@ export function recordAnswer(p: Progress, skillId: string, mode: Mode, outcome: 
       ...sp,
       attempts: sp.attempts + 1,
       correct: sp.correct + (right ? 1 : 0),
-      streak: timed ? sp.streak : outcome === 'first' ? sp.streak + 1 : outcome === 'wrong' ? 0 : sp.streak,
+      // Only right-first-time answers (no hint) count toward the streak.
+      streak: timed ? sp.streak : outcome === 'first' ? sp.streak + 1 : 0,
     }),
     now,
   );

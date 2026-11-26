@@ -63,6 +63,8 @@ export const en = {
 
   questionOf: 'Question {i} of {n}',
   inARow: 'In a row: {n} / {goal}',
+  needHint: 'Need a hint?',
+  hintTitle: 'Hint:',
   checkAnswer: 'Check',
   nextBox: 'Next box →',
   next: 'Next',

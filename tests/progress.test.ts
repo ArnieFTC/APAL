@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { sevalaya } from '../src/content/sevalaya';
+import { makeFirstQuestion } from '../src/content';
 import {
   awardBadges,
   dueReviews,
@@ -40,6 +41,23 @@ describe('learning flow', () => {
     expect(skillView(sevalaya, p, 'two-step', T0)).toBe('learning');
     for (let i = 0; i < 3; i++) p = recordAnswer(p, 'two-step', 'practice', 'first', T0);
     expect(skillView(sevalaya, p, 'two-step', T0)).toBe('ready');
+  });
+
+  it('does not count an answer that needed a hint toward the streak', () => {
+    let p = markLessonSeen(start(), 'two-step', T0);
+    p = recordAnswer(p, 'two-step', 'practice', 'first', T0);
+    p = recordAnswer(p, 'two-step', 'practice', 'first', T0);
+    p = recordAnswer(p, 'two-step', 'practice', 'second', T0);
+    expect(skillOf(p, 'two-step').streak).toBe(0);
+    p = recordAnswer(p, 'two-step', 'practice', 'first', T0);
+    expect(skillView(sevalaya, p, 'two-step', T0)).toBe('learning');
+  });
+
+  it('opens practice with a plain equation, not a word problem', () => {
+    for (const skill of sevalaya.skills.filter((s) => s.id !== 'word-problems')) {
+      const q = makeFirstQuestion(skill);
+      expect(q.template.id, skill.id).toMatch(/basic|origin/);
+    }
   });
 
   it('sends the learner back to practice after a failed check', () => {
