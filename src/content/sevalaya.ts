@@ -219,9 +219,9 @@ export const sevalaya: Pathway = {
       prereqs: ['two-step'],
       lesson: {
         body: {
-          en: 'If an equation has brackets, multiply them out first: a(x + b) = ax + ab. Multiply every term inside by the number outside. Then solve as usual. Answers can be fractions; type them like 5/2.',
-          es: 'Si una ecuación tiene paréntesis, primero multiplícalos: a(x + b) = ax + ab. Multiplica cada término de adentro por el número de afuera. Luego resuelve como siempre. Las respuestas pueden ser fracciones; escríbelas como 5/2.',
-          ta: 'சமன்பாட்டில் அடைப்புக்குறி இருந்தால், முதலில் அதைத் திறந்து பெருக்குங்கள்: a(x + b) = ax + ab. உள்ளே உள்ள ஒவ்வொன்றையும் வெளியே உள்ள எண்ணால் பெருக்க வேண்டும். பிறகு வழக்கம் போல் செய்யுங்கள். விடை பின்னமாகவும் வரலாம்; அப்போது 5/2 என்று எழுதுங்கள்.',
+          en: 'If an equation has brackets, multiply them out first: a(x + b) = ax + ab. Multiply every term inside by the number outside. Then solve as usual. Answers can be fractions; enter them as a fraction or decimal, like 5/2 or 2.5.',
+          es: 'Si una ecuación tiene paréntesis, primero multiplícalos: a(x + b) = ax + ab. Multiplica cada término de adentro por el número de afuera. Luego resuelve como siempre. Las respuestas pueden ser fracciones; escríbelas como fracción o decimal, por ejemplo 5/2 o 2.5.',
+          ta: 'சமன்பாட்டில் அடைப்புக்குறி இருந்தால், முதலில் அதைத் திறந்து பெருக்குங்கள்: a(x + b) = ax + ab. உள்ளே உள்ள ஒவ்வொன்றையும் வெளியே உள்ள எண்ணால் பெருக்க வேண்டும். பிறகு வழக்கம் போல் செய்யுங்கள். விடை பின்னமாகவும் வரலாம்; அப்போது பின்னமாகவோ (5/2) தசம எண்ணாகவோ (2.5) எழுதுங்கள்.',
         },
         example: {
           en: '3(x − 2) = 12\nMultiply out: 3x − 6 = 12\nAdd 6: 3x = 18\nDivide by 3: x = 6',
@@ -231,7 +231,7 @@ export const sevalaya: Pathway = {
       },
       teacherNotes: [
         'Common mistake: multiplying only the first term inside (3(x − 2) → 3x − 2).',
-        'Some answers are fractions. Show how to type 5/2 on the keypad, and that 2.5 is accepted too.',
+        'Some answers are fractions. Show how to type 5/2 on the keypad. Decimals work too: exact ones like 2.5, or rounded to 2 places like 2.33 for 7/3.',
       ],
       templates: [
         {
@@ -313,14 +313,14 @@ export const sevalaya: Pathway = {
             };
           },
           prompt: {
-            en: 'Solve for x. The answer is a fraction.\n{eq}',
-            es: 'Resuelve para x. La respuesta es una fracción.\n{eq}',
-            ta: 'x-ஐக் கண்டுபிடியுங்கள். விடை ஒரு பின்னம்.\n{eq}',
+            en: 'Solve for x. Enter your answer as a fraction or decimal.\n{eq}',
+            es: 'Resuelve para x. Escribe tu respuesta como fracción o decimal.\n{eq}',
+            ta: 'x-ஐக் கண்டுபிடியுங்கள். விடையைப் பின்னமாகவோ தசம எண்ணாகவோ எழுதுங்கள்.\n{eq}',
           },
           hint: {
-            en: 'Multiply out the brackets, solve as usual, and leave the answer as a fraction like 7/3.',
-            es: 'Multiplica el paréntesis, resuelve como siempre y deja la respuesta como fracción, por ejemplo 7/3.',
-            ta: 'அடைப்பைத் திறந்து பெருக்கி, வழக்கம் போல் செய்து, விடையை 7/3 மாதிரி பின்னமாக எழுதுங்கள்.',
+            en: 'Multiply out the brackets and solve as usual. Enter the answer as a fraction like 7/3, or a decimal rounded to 2 places like 2.33.',
+            es: 'Multiplica el paréntesis y resuelve como siempre. Escribe la respuesta como fracción, por ejemplo 7/3, o como decimal redondeado a 2 cifras, por ejemplo 2.33.',
+            ta: 'அடைப்பைத் திறந்து பெருக்கி, வழக்கம் போல் செய்யுங்கள். விடையை 7/3 மாதிரி பின்னமாகவோ, 2.33 மாதிரி இரண்டு தசம இடங்களுக்குத் தசம எண்ணாகவோ எழுதுங்கள்.',
           },
           solution: { en: '{eq}\n{expanded} = {c}\n{a}x = {cab}\nx = {x}' },
         },

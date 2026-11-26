@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion, sameAnswer } from '../content';
+import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion } from '../content';
 import type { Question, Skill } from '../content/types';
 import { NumberPad } from '../components/NumberPad';
 import { MathText, Toast } from '../components/ui';
@@ -23,7 +23,7 @@ import { useI18n } from '../i18n';
 import type { StringKey } from '../i18n/en';
 import { useLearner } from '../learner';
 import { go, href } from '../router';
-import { parseAnswer, type Rational } from '../lib/rational';
+import { answerMatches, parseAnswer } from '../lib/rational';
 import { NotFound } from './Learn';
 
 const MODES: Mode[] = ['practice', 'check', 'review', 'refresh'];
@@ -78,9 +78,8 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
 
   function submit(raw: string[]) {
     if (phase === 'resolved') return next();
-    const given = raw.map(parseAnswer);
-    if (given.some((g) => !g)) return setFeedback('invalid');
-    const right = sameAnswer(given as Rational[], question.answer);
+    if (raw.some((r) => !parseAnswer(r))) return setFeedback('invalid');
+    const right = raw.length === question.answer.length && raw.every((r, i) => answerMatches(r, question.answer[i]));
     if (right) return resolve(phase === 'hint' ? 'second' : 'first');
     if (!timed && phase === 'answer') {
       // First miss in practice: show a hint and let them try again.

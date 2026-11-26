@@ -113,14 +113,14 @@ export const coordinateSkills: Skill[] = [
           };
         },
         prompt: {
-          en: 'Find the midpoint of A{A} and B{B}.\nThe answer can be a fraction, like 5/2.',
-          es: 'Halla el punto medio de A{A} y B{B}.\nLa respuesta puede ser una fracción, como 5/2.',
-          ta: 'A{A}, B{B} இவற்றின் நடுப்புள்ளியைக் கண்டுபிடியுங்கள்.\nவிடை 5/2 மாதிரி பின்னமாகவும் வரலாம்.',
+          en: 'Find the midpoint of A{A} and B{B}.\nEnter your answer as a fraction or decimal, like 5/2 or 2.5.',
+          es: 'Halla el punto medio de A{A} y B{B}.\nEscribe tu respuesta como fracción o decimal, por ejemplo 5/2 o 2.5.',
+          ta: 'A{A}, B{B} இவற்றின் நடுப்புள்ளியைக் கண்டுபிடியுங்கள்.\nவிடையைப் பின்னமாகவோ (5/2) தசம எண்ணாகவோ (2.5) எழுதுங்கள்.',
         },
         hint: {
-          en: 'Add the two x-values and divide by 2. If the sum is odd, leave it as a fraction like 7/2 (or type 3.5).',
-          es: 'Suma los dos valores de x y divide entre 2. Si la suma es impar, déjala como fracción, por ejemplo 7/2 (o escribe 3.5).',
-          ta: 'இரண்டு x-களையும் கூட்டி 2-ஆல் வகுங்கள். கூட்டல் ஒற்றைப்படை என்றால், 7/2 மாதிரி பின்னமாக எழுதுங்கள் (அல்லது 3.5).',
+          en: 'Add the two x-values and divide by 2. If the sum is odd, enter it as a fraction or decimal, like 7/2 or 3.5.',
+          es: 'Suma los dos valores de x y divide entre 2. Si la suma es impar, escríbela como fracción o decimal, por ejemplo 7/2 o 3.5.',
+          ta: 'இரண்டு x-களையும் கூட்டி 2-ஆல் வகுங்கள். கூட்டல் ஒற்றைப்படை என்றால், விடையைப் பின்னமாகவோ (7/2) தசம எண்ணாகவோ (3.5) எழுதுங்கள்.',
         },
         solution: { en: 'x = ({sx}) / 2 = {mx}\ny = ({sy}) / 2 = {my}\nMidpoint: ({mx}, {my})' },
         mistakes: (v, a) => [

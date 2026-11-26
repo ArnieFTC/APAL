@@ -60,3 +60,19 @@ function parseDecimal(s: string): Rational | null {
   const n = Number((whole || '0') + part);
   return Number.isFinite(n) ? frac(n, d) : null;
 }
+
+/**
+ * True when what the learner typed matches the answer: exactly (7/3, 14/6, 2.5), or as a decimal
+ * rounded or cut off to at least 2 places, for answers like 7/3 that have no exact decimal (2.33).
+ */
+export function answerMatches(raw: string, answer: Rational): boolean {
+  const given = parseAnswer(raw);
+  if (!given) return false;
+  if (equal(given, answer)) return true;
+  const places = /\.(\d+)$/.exec(raw.trim())?.[1].length ?? 0;
+  if (places < 2 || raw.includes('/')) return false;
+  const scale = 10 ** places;
+  const exact = (answer.n / answer.d) * scale;
+  const typed = (given.n / given.d) * scale;
+  return Math.abs(Math.round(exact) - typed) < 1e-6 || Math.abs(Math.trunc(exact) - typed) < 1e-6;
+}
