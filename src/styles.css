@@ -1147,7 +1147,17 @@ select:focus-visible,
   margin: 0;
 }
 
-.hint-button {
-  width: 100%;
+.help-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 12px;
   margin-top: 4px;
+}
+.feedback-taught {
+  background: var(--brand-soft);
+  color: var(--ink);
+}
+.feedback-taught h3 {
+  margin-top: 12px;
 }

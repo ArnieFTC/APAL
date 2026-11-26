@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion } from '../content';
+import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion, makeSimilarQuestion } from '../content';
 import type { Question, Skill } from '../content/types';
 import { NumberPad } from '../components/NumberPad';
 import { MathText, Toast } from '../components/ui';
@@ -39,7 +39,7 @@ export function PracticeRoute({ skillId, mode }: { skillId: string; mode: string
 }
 
 type Phase = 'answer' | 'hint' | 'resolved';
-type Feedback = 'invalid' | 'hint' | 'askedHint' | 'first' | 'second' | 'wrong' | null;
+type Feedback = 'invalid' | 'hint' | 'askedHint' | 'taught' | 'first' | 'second' | 'wrong' | null;
 /** Message keys, not translated text, so the screen follows a language switch. */
 type Summary = { title: StringKey; vars?: Record<string, number>; note?: StringKey; good: boolean };
 
@@ -91,11 +91,16 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
     resolve('wrong');
   }
 
-  function resolve(outcome: Outcome) {
+  /** "Teach me": solve this one for them. It counts as a miss, then they try one like it. */
+  function teach() {
+    resolve('wrong', 'taught');
+  }
+
+  function resolve(outcome: Outcome, shown: Feedback = outcome) {
     const gained = outcome === 'first' ? (timed ? XP.checkOrReview : XP.practice) : outcome === 'second' ? XP.afterHint : 0;
     const p = apply((prev) => recordAnswer(prev, skill.id, mode, outcome, Date.now()), false, gained ? [t('xpGained', { n: gained })] : []);
     setPhase('resolved');
-    setFeedback(outcome);
+    setFeedback(shown);
     if (outcome !== 'wrong') setScore((s) => s + 1);
     if (timed) return;
 
@@ -114,7 +119,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   function next() {
     if (timed && index + 1 >= length) return finish(score);
     setIndex((i) => i + 1);
-    const q = makeQuestion(skill, question.template.id);
+    const q = feedback === 'taught' ? makeSimilarQuestion(skill, question.template) : makeQuestion(skill, question.template.id);
     setQuestion(q);
     setInput(blank(q));
     setPhase('answer');
@@ -207,17 +212,24 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
         <MathText text={tl(question.template.prompt, question.vars)} />
       </section>
 
-      {!timed && phase === 'answer' && (
-        <button
-          className="button ghost hint-button"
-          onClick={() => {
-            // Asking for a hint counts like a miss: no streak, one more try.
-            setPhase('hint');
-            setFeedback('askedHint');
-          }}
-        >
-          💡 {t('needHint')}
-        </button>
+      {!timed && phase !== 'resolved' && (
+        <div className="help-buttons">
+          {phase === 'answer' && (
+            <button
+              className="button ghost"
+              onClick={() => {
+                // Asking for a hint counts like a miss: no streak, one more try.
+                setPhase('hint');
+                setFeedback('askedHint');
+              }}
+            >
+              💡 {t('needHint')}
+            </button>
+          )}
+          <button className="button ghost" onClick={teach}>
+            📖 {t('teachMe')}
+          </button>
+        </div>
       )}
       {feedback && (
         <section className={`feedback feedback-${feedback}`} role="status">
@@ -228,6 +240,25 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
                 <strong>{feedback === 'hint' ? t('notYetHint') : t('hintTitle')}</strong>
               </p>
               <p>{tl(question.template.hint, question.vars)}</p>
+            </>
+          )}
+          {feedback === 'taught' && (
+            <>
+              <p className="big-feedback">{t('teachTitle')}</p>
+              <h3>1. {t('startHere')}</h3>
+              <p>{tl(question.template.hint, question.vars)}</p>
+              {solution && (
+                <>
+                  <h3>2. {t('stepByStep')}</h3>
+                  <div className="worked">
+                    <MathText text={solution} />
+                  </div>
+                </>
+              )}
+              <h3>
+                {solution ? 3 : 2}. {t('answerIs', { a: displayAnswer(question.template, question.answer) })}
+              </h3>
+              <p className="muted">{t('teachNext')}</p>
             </>
           )}
           {feedback === 'first' && <p className="big-feedback">{t('correct')}</p>}
@@ -269,7 +300,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
         </section>
       ) : phase === 'resolved' ? (
         <button className="button primary big next" onClick={next} autoFocus>
-          {t('next')} →
+          {feedback === 'taught' ? t('tryLikeIt') : `${t('next')} →`}
         </button>
       ) : (
         <NumberPad

@@ -30,6 +30,9 @@ export function makeQuestion(skill: Skill, lastTemplateId?: string, rng: Rng = m
   return build(skill, rng.pick(options), rng);
 }
 
+/** Another question of the same type with new numbers, after being taught one. */
+export const makeSimilarQuestion = (skill: Skill, template: Template, rng: Rng = makeRng()): Question => build(skill, template, rng);
+
 /** The opening question of a practice session: the skill's first, most straightforward type. */
 export const makeFirstQuestion = (skill: Skill, rng: Rng = makeRng()): Question => build(skill, skill.templates[0], rng);
 

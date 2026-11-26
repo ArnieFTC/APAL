@@ -42,7 +42,7 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { n, b, c, rest: c - b, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'A cricket team scored {c} runs. {b} runs were extras. The other runs came from {n} batters who each scored the same. How many runs did each batter score?',
+        en: 'A cricket team scored {c} runs. {b} of those runs were extras (wides and no-balls). The rest were scored by {n} batters, and each of them scored the same number of runs. How many runs did each batter score?',
         es: 'Un equipo de críquet anotó {c} carreras. {b} fueron extras. El resto lo hicieron {n} bateadores que anotaron lo mismo cada uno. ¿Cuántas carreras anotó cada bateador?',
         ta: 'ஒரு கிரிக்கெட் அணி {c} ரன் எடுத்தது. அதில் {b} ரன் உதிரி (extras). மீதி ரன்களை {n} பேட்ஸ்மேன்கள் ஆளுக்குச் சமமாக எடுத்தார்கள். ஒவ்வொருவரும் எத்தனை ரன்?',
       },
@@ -137,13 +137,13 @@ export const extraTemplates: Record<string, Template[]> = {
         };
       },
       prompt: {
-        en: 'A number times {a}, plus {b}, gives the same as the number times {c}, plus {d}. What is the number?',
-        es: 'Un número por {a}, más {b}, da lo mismo que el número por {c}, más {d}. ¿Cuál es el número?',
+        en: 'Think of a number. Multiply it by {a} and add {b}. You get the same answer as when you multiply the number by {c} and add {d}. What is the number?',
+        es: 'Piensa en un número. Multiplícalo por {a} y suma {b}. Obtienes lo mismo que si lo multiplicas por {c} y sumas {d}. ¿Cuál es el número?',
         ta: 'ஒரு எண்ணை {a}-ஆல் பெருக்கி {b} கூட்டினாலும், அதே எண்ணை {c}-ஆல் பெருக்கி {d} கூட்டினாலும் ஒரே விடை வருகிறது. அந்த எண் என்ன?',
       },
       hint: {
-        en: 'Write {lhs} = {rhs}, then move the x-terms to one side.',
-        es: 'Escribe {lhs} = {rhs} y luego junta los términos con x en un lado.',
+        en: 'Write {lhs} = {rhs}. Then get all the x’s on one side by taking away the smaller x part from both sides.',
+        es: 'Escribe {lhs} = {rhs}. Luego junta todas las x en un lado quitando la parte con x más pequeña de ambos lados.',
         ta: '{lhs} = {rhs} என்று எழுதி, x-களை ஒரு பக்கம் கொண்டு வாருங்கள்.',
       },
       solution: { en: '{lhs} = {rhs}\n{k}x = {dmb}\nx = {x}' },
@@ -159,9 +159,9 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { a, b, c, d, k: a - c, dmb: d - b, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Tank A has {b} litres of water and fills at {a} litres a minute. Tank B has {d} litres and fills at {c} litres a minute. After how many minutes do they hold the same amount?',
-        es: 'El tanque A tiene {b} litros y se llena a {a} litros por minuto. El tanque B tiene {d} litros y se llena a {c} litros por minuto. ¿Después de cuántos minutos tienen lo mismo?',
-        ta: 'தொட்டி A-யில் {b} லிட்டர் தண்ணீர், நிமிடத்துக்கு {a} லிட்டர் நிரம்புகிறது. தொட்டி B-யில் {d} லிட்டர், நிமிடத்துக்கு {c} லிட்டர் நிரம்புகிறது. எத்தனை நிமிடம் கழித்து இரண்டிலும் ஒரே அளவு தண்ணீர் இருக்கும்?',
+        en: 'Tank A has {b} litres of water, and {a} more litres go into it every minute. Tank B has {d} litres, and {c} more litres go into it every minute. After how many minutes will both tanks have the same amount of water?',
+        es: 'El tanque A tiene {b} litros de agua y le entran {a} litros más cada minuto. El tanque B tiene {d} litros y le entran {c} litros más cada minuto. ¿Después de cuántos minutos tendrán los dos la misma cantidad de agua?',
+        ta: 'தொட்டி A-யில் {b} லிட்டர் தண்ணீர் இருக்கிறது. ஒவ்வொரு நிமிடமும் அதில் {a} லிட்டர் கூடுதலாக வருகிறது. தொட்டி B-யில் {d} லிட்டர் இருக்கிறது. ஒவ்வொரு நிமிடமும் அதில் {c} லிட்டர் கூடுதலாக வருகிறது. எத்தனை நிமிடம் கழித்து இரண்டிலும் ஒரே அளவு தண்ணீர் இருக்கும்?',
       },
       hint: {
         en: 'After x minutes A has {b} + {a}x. Write B the same way and set them equal.',
@@ -182,7 +182,7 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { a, b, c, d, k: a - c, bmd: b - d, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Kumar has ₹{b} and spends ₹{a} a day. Lata has ₹{d} and spends ₹{c} a day. After how many days will they have the same amount left?',
+        en: 'Kumar has ₹{b} and spends ₹{a} of it every day. Lata has ₹{d} and spends ₹{c} of it every day. After how many days will they both have the same amount of money left?',
         es: 'Kumar tiene ₹{b} y gasta ₹{a} al día. Lata tiene ₹{d} y gasta ₹{c} al día. ¿Después de cuántos días les quedará lo mismo?',
         ta: 'குமாரிடம் ₹{b} இருக்கிறது, தினமும் ₹{a} செலவு செய்கிறான். லதாவிடம் ₹{d} இருக்கிறது, தினமும் ₹{c} செலவு செய்கிறாள். எத்தனை நாள் கழித்து இருவரிடமும் ஒரே அளவு பணம் மீதி இருக்கும்?',
       },
@@ -204,9 +204,9 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { a, b, d, k: a - c, bmd: b - d, x, h: d - x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Candle A is {b} cm tall and burns {a} cm every hour. Candle B is {d} cm tall and burns 1 cm every hour. After how many hours are they the same height?',
-        es: 'La vela A mide {b} cm y se quema {a} cm cada hora. La vela B mide {d} cm y se quema 1 cm cada hora. ¿Después de cuántas horas miden lo mismo?',
-        ta: 'மெழுகுவர்த்தி A {b} செ.மீ. உயரம், ஒவ்வொரு மணி நேரமும் {a} செ.மீ. எரிகிறது. மெழுகுவர்த்தி B {d} செ.மீ. உயரம், ஒவ்வொரு மணி நேரமும் 1 செ.மீ. எரிகிறது. எத்தனை மணி நேரம் கழித்து இரண்டும் ஒரே உயரம்?',
+        en: 'Candle A is {b} cm tall, and as it burns it gets {a} cm shorter every hour. Candle B is {d} cm tall and gets 1 cm shorter every hour. After how many hours will both candles be the same height?',
+        es: 'La vela A mide {b} cm y, al quemarse, se acorta {a} cm cada hora. La vela B mide {d} cm y se acorta 1 cm cada hora. ¿Después de cuántas horas medirán lo mismo?',
+        ta: 'மெழுகுவர்த்தி A {b} செ.மீ. உயரம். எரியும்போது ஒவ்வொரு மணி நேரமும் {a} செ.மீ. குறைகிறது. மெழுகுவர்த்தி B {d} செ.மீ. உயரம், ஒவ்வொரு மணி நேரமும் 1 செ.மீ. குறைகிறது. எத்தனை மணி நேரம் கழித்து இரண்டும் ஒரே உயரம் ஆகும்?',
       },
       hint: {
         en: 'After x hours, A is {b} − {a}x tall and B is {d} − x tall. Set them equal.',
@@ -262,8 +262,8 @@ export const extraTemplates: Record<string, Template[]> = {
       },
       prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
       hint: {
-        en: 'Open both brackets, then add the x-terms together and the plain numbers together.',
-        es: 'Abre los dos paréntesis y luego suma los términos con x entre sí y los números solos entre sí.',
+        en: 'Open both brackets. Then add the x’s together, and add the plain numbers together.',
+        es: 'Abre los dos paréntesis. Luego suma las x entre sí, y los números solos entre sí.',
         ta: 'இரண்டு அடைப்பையும் திறந்து பெருக்குங்கள். பிறகு x-களை ஒன்றாகவும், தனி எண்களை ஒன்றாகவும் கூட்டுங்கள்.',
       },
       solution: { en: '{eq}\n{expanded} = {e}\n{joined} = {e}\n{k}x = {rest}\nx = {x}' },
@@ -321,7 +321,7 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { s, x, twice: 2 * x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Anu has some ₹5 coins and twice as many ₹2 coins. Altogether she has ₹{s}. How many ₹5 coins does she have?',
+        en: 'Anu has some ₹5 coins. She has twice as many ₹2 coins as ₹5 coins. All her coins together are worth ₹{s}. How many ₹5 coins does she have?',
         es: 'Anu tiene algunas monedas de ₹5 y el doble de monedas de ₹2. En total tiene ₹{s}. ¿Cuántas monedas de ₹5 tiene?',
         ta: 'அனுவிடம் சில ₹5 நாணயங்களும், அதைப் போல் இரண்டு மடங்கு ₹2 நாணயங்களும் உள்ளன. மொத்தம் ₹{s}. அவளிடம் எத்தனை ₹5 நாணயங்கள்?',
       },
@@ -343,8 +343,8 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { a, c, n, t, k: a + c, cn: c * n, rest: t - c * n, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Tickets for a school show cost ₹{a} for adults and ₹{c} for children. {n} more children than adults came, and ₹{t} was collected. How many adults came?',
-        es: 'Las entradas de una función escolar cuestan ₹{a} para adultos y ₹{c} para niños. Vinieron {n} niños más que adultos y se recaudaron ₹{t}. ¿Cuántos adultos vinieron?',
+        en: 'Tickets for a school show cost ₹{a} for each adult and ₹{c} for each child. {n} more children came than adults. The school got ₹{t} from tickets in total. How many adults came?',
+        es: 'Las entradas de una función escolar cuestan ₹{a} por adulto y ₹{c} por niño. Vinieron {n} niños más que adultos. La escuela recibió ₹{t} en total por las entradas. ¿Cuántos adultos vinieron?',
         ta: 'பள்ளி நிகழ்ச்சிக்குப் பெரியவர்களுக்கு டிக்கெட் ₹{a}, குழந்தைகளுக்கு ₹{c}. பெரியவர்களை விட {n} குழந்தைகள் அதிகம் வந்தார்கள். மொத்தம் ₹{t} வசூல் ஆனது. எத்தனை பெரியவர்கள் வந்தார்கள்?',
       },
       hint: {
@@ -364,7 +364,7 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { k, y, s, k1: k + 1, y2: 2 * y, rest: s - 2 * y, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'A father is {k} times as old as his son. In {y} years, their ages will add up to {s}. How old is the son now?',
+        en: 'A father is {k} times as old as his son. {y} years from now, their two ages added together will be {s}. How old is the son now?',
         es: 'Un padre tiene {k} veces la edad de su hijo. Dentro de {y} años, sus edades sumarán {s}. ¿Cuántos años tiene ahora el hijo?',
         ta: 'அப்பாவின் வயது மகனின் வயதைப் போல் {k} மடங்கு. {y} வருடம் கழித்து இருவர் வயதையும் கூட்டினால் {s}. இப்போது மகனுக்கு என்ன வயது?',
       },
@@ -405,8 +405,8 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { a, h, d, sum: d / h, two: d / h - a, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'Two buses leave Chennai at the same time and go in opposite directions. One is {a} km/h faster than the other. After {h} hours they are {d} km apart. How fast is the slower bus, in km/h?',
-        es: 'Dos autobuses salen de Chennai a la vez en direcciones opuestas. Uno va {a} km/h más rápido que el otro. Después de {h} horas están a {d} km. ¿A qué velocidad va el más lento, en km/h?',
+        en: 'Two buses leave Chennai at the same time and drive in opposite directions. Every hour, one bus goes {a} km more than the other. After {h} hours they are {d} km apart. How many km does the slower bus go in one hour?',
+        es: 'Dos autobuses salen de Chennai a la vez en direcciones opuestas. Cada hora, uno recorre {a} km más que el otro. Después de {h} horas están a {d} km uno del otro. ¿Cuántos km recorre en una hora el autobús más lento?',
         ta: 'இரண்டு பேருந்துகள் ஒரே நேரத்தில் சென்னையிலிருந்து எதிர் எதிர்த் திசையில் புறப்படுகின்றன. ஒன்று மற்றதை விட மணிக்கு {a} கி.மீ. வேகம் அதிகம். {h} மணி நேரம் கழித்து இரண்டுக்கும் இடையே {d} கி.மீ. மெதுவான பேருந்தின் வேகம் மணிக்கு எத்தனை கி.மீ.?',
       },
       hint: {
@@ -493,7 +493,7 @@ export const extraTemplates: Record<string, Template[]> = {
         };
       },
       prompt: {
-        en: 'A garden sprinkler at {C} waters everything up to {r} m away. The edge of the wet patch is a circle.\nWrite it as (x − h)² + (y − k)² = r²\nEnter h, k and r².',
+        en: 'A water sprinkler in a garden is at {C}. It wets the ground up to {r} m away in every direction, so the edge of the wet ground is a circle.\nWrite it as (x − h)² + (y − k)² = r²\nEnter h, k and r².',
         es: 'Un aspersor en {C} riega todo hasta {r} m de distancia. El borde de la zona mojada es una circunferencia.\nEscríbela como (x − h)² + (y − k)² = r²\nEscribe h, k y r².',
         ta: '{C}-இல் உள்ள ஒரு தண்ணீர் தெளிப்பான், {r} மீ. தூரம் வரை நனைக்கிறது. நனைந்த பகுதியின் ஓரம் ஒரு வட்டம்.\n(x − h)² + (y − k)² = r² என்று எழுதுங்கள்.\nh, k, r² என்ன?',
       },

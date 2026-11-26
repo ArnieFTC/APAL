@@ -65,8 +65,8 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'Move the constant first: do the opposite operation on both sides. Then divide both sides by the number in front of x.',
-            es: 'Primero mueve la constante: haz la operación opuesta en ambos lados. Luego divide ambos lados entre el número que acompaña a x.',
+            en: 'First get rid of the number that is added or taken away: do the opposite (take it away, or add it) on both sides. Then divide both sides by the number in front of x.',
+            es: 'Primero quita el número que se suma o se resta: haz lo contrario (réstalo o súmalo) en ambos lados. Luego divide ambos lados entre el número que está delante de x.',
             ta: 'முதலில் தனி எண்ணை மறுபக்கம் கொண்டு செல்லுங்கள்: இரண்டு பக்கமும் அதற்கு எதிரானதைச் செய்யுங்கள். பிறகு x-க்கு முன் உள்ள எண்ணால் இரண்டு பக்கமும் வகுக்கவும்.',
           },
           solution: { en: '{eq}\n{ax} = {rhs}\nx = {x}' },
@@ -85,8 +85,8 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'Move the constant first. Then multiply both sides by {a} to undo the dividing.',
-            es: 'Primero mueve la constante. Luego multiplica ambos lados por {a} para deshacer la división.',
+            en: 'First get rid of the number that is added or taken away, by doing the opposite on both sides. Then multiply both sides by {a} to undo the dividing.',
+            es: 'Primero quita el número que se suma o se resta, haciendo lo contrario en ambos lados. Luego multiplica ambos lados por {a} para deshacer la división.',
             ta: 'முதலில் தனி எண்ணை மறுபக்கம் கொண்டு செல்லுங்கள். பிறகு வகுத்ததை நீக்க, இரண்டு பக்கமும் {a}-ஆல் பெருக்கவும்.',
           },
           solution: { en: '{eq}\nx/{a} = {q}\nx = {x}' },
@@ -101,8 +101,8 @@ export const sevalaya: Pathway = {
             return { vars: { a, b, c, rest: c - b, km }, answer: frac(km) };
           },
           prompt: {
-            en: 'An auto-rickshaw charges ₹{b} to start, plus ₹{a} for every km. A ride cost ₹{c}. How many km long was the ride?',
-            es: 'Un mototaxi cobra ₹{b} al subir, más ₹{a} por cada km. Un viaje costó ₹{c}. ¿Cuántos km fue el viaje?',
+            en: 'An auto-rickshaw costs ₹{b} as soon as you get in, and then ₹{a} more for every km. One ride cost ₹{c} in total. How many km was the ride?',
+            es: 'Un mototaxi cuesta ₹{b} apenas te subes, y luego ₹{a} más por cada km. Un viaje costó ₹{c} en total. ¿Cuántos km fue el viaje?',
             ta: 'ஆட்டோவில் ஏறியதும் ₹{b}, பிறகு ஒவ்வொரு கி.மீ.க்கும் ₹{a}. ஒரு பயணத்துக்கு ₹{c} ஆனது. பயணம் எத்தனை கி.மீ.?',
           },
           hint: {
@@ -130,8 +130,8 @@ export const sevalaya: Pathway = {
       prereqs: ['two-step'],
       lesson: {
         body: {
-          en: 'When x appears on both sides, first gather all the x-terms on one side by subtracting one of them from both sides. Then it becomes a two-step equation you already know how to solve.',
-          es: 'Cuando x aparece en ambos lados, primero junta todos los términos con x en un lado, restando uno de ellos en ambos lados. Así se convierte en una ecuación de dos pasos que ya sabes resolver.',
+          en: 'When there is an x on both sides, first get all the x’s on one side: take away the smaller x part from both sides. Then it becomes a two-step equation, which you already know how to solve.',
+          es: 'Cuando x aparece en ambos lados, primero junta todas las x en un lado: quita la parte con x más pequeña de ambos lados. Así se convierte en una ecuación de dos pasos que ya sabes resolver.',
           ta: 'x இரண்டு பக்கமும் வந்தால், முதலில் எல்லா x-களையும் ஒரு பக்கம் கொண்டு வாருங்கள்: ஒரு பக்கத்து x-ஐ இரண்டு பக்கமும் கழியுங்கள். அதன் பிறகு இது உங்களுக்குத் தெரிந்த இரண்டு படிச் சமன்பாடு ஆகிவிடும்.',
         },
         example: {
@@ -190,8 +190,8 @@ export const sevalaya: Pathway = {
             return { vars: { a, b, c, d, k: a - c, dmb: d - b, x }, answer: frac(x) };
           },
           prompt: {
-            en: 'Phone plan A costs ₹{b} a month plus ₹{a} per GB of data. Plan B costs ₹{d} a month plus ₹{c} per GB. For how many GB do both plans cost the same?',
-            es: 'El plan A cuesta ₹{b} al mes más ₹{a} por GB de datos. El plan B cuesta ₹{d} al mes más ₹{c} por GB. ¿Con cuántos GB cuestan lo mismo los dos planes?',
+            en: 'Phone plan A costs ₹{b} every month, plus ₹{a} for each GB of internet data you use. Plan B costs ₹{d} every month, plus ₹{c} for each GB. How many GB would you need to use for both plans to cost the same?',
+            es: 'El plan de teléfono A cuesta ₹{b} cada mes, más ₹{a} por cada GB de datos que uses. El plan B cuesta ₹{d} cada mes, más ₹{c} por cada GB. ¿Cuántos GB tendrías que usar para que los dos planes cuesten lo mismo?',
             ta: 'போன் பிளான் A: மாதம் ₹{b}, ஒவ்வொரு GB-க்கும் ₹{a}. பிளான் B: மாதம் ₹{d}, ஒவ்வொரு GB-க்கும் ₹{c}. எத்தனை GB-க்கு இரண்டு பிளானுக்கும் ஒரே செலவு?',
           },
           hint: {
@@ -219,12 +219,12 @@ export const sevalaya: Pathway = {
       prereqs: ['two-step'],
       lesson: {
         body: {
-          en: 'If an equation has brackets, multiply them out first: a(x + b) = ax + ab. Multiply every term inside by the number outside. Then solve as usual. Answers can be fractions; enter them as a fraction or decimal, like 5/2 or 2.5.',
-          es: 'Si una ecuación tiene paréntesis, primero multiplícalos: a(x + b) = ax + ab. Multiplica cada término de adentro por el número de afuera. Luego resuelve como siempre. Las respuestas pueden ser fracciones; escríbelas como fracción o decimal, por ejemplo 5/2 o 2.5.',
+          en: 'If an equation has brackets, multiply them out first: a(x + b) = ax + ab. Multiply everything inside the brackets by the number outside. Then solve as usual. Answers can be fractions; enter them as a fraction or decimal, like 5/2 or 2.5.',
+          es: 'Si una ecuación tiene paréntesis, primero multiplícalos: a(x + b) = ax + ab. Multiplica todo lo que está dentro del paréntesis por el número de afuera. Luego resuelve como siempre. Las respuestas pueden ser fracciones; escríbelas como fracción o decimal, por ejemplo 5/2 o 2.5.',
           ta: 'சமன்பாட்டில் அடைப்புக்குறி இருந்தால், முதலில் அதைத் திறந்து பெருக்குங்கள்: a(x + b) = ax + ab. உள்ளே உள்ள ஒவ்வொன்றையும் வெளியே உள்ள எண்ணால் பெருக்க வேண்டும். பிறகு வழக்கம் போல் செய்யுங்கள். விடை பின்னமாகவும் வரலாம்; அப்போது பின்னமாகவோ (5/2) தசம எண்ணாகவோ (2.5) எழுதுங்கள்.',
         },
         example: {
-          en: '3(x − 2) = 12\nMultiply out: 3x − 6 = 12\nAdd 6: 3x = 18\nDivide by 3: x = 6',
+          en: '3(x − 2) = 12\nOpen the brackets: 3x − 6 = 12\nAdd 6: 3x = 18\nDivide by 3: x = 6',
           es: '3(x − 2) = 12\nMultiplica: 3x − 6 = 12\nSuma 6: 3x = 18\nDivide entre 3: x = 6',
           ta: '3(x − 2) = 12\nதிறந்து பெருக்கவும்: 3x − 6 = 12\n6 கூட்டவும்: 3x = 18\n3-ஆல் வகுக்கவும்: x = 6',
         },
@@ -255,7 +255,7 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'Multiply out the brackets first: multiply each term inside by {a}.',
+            en: 'Open the brackets first: multiply everything inside them by {a}.',
             es: 'Primero multiplica el paréntesis: multiplica cada término de adentro por {a}.',
             ta: 'முதலில் அடைப்பைத் திறந்து பெருக்குங்கள்: உள்ளே உள்ள ஒவ்வொன்றையும் {a}-ஆல் பெருக்கவும்.',
           },
@@ -285,8 +285,8 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'Multiply out the brackets first, then get all the x-terms on one side.',
-            es: 'Primero multiplica el paréntesis y luego junta los términos con x en un lado.',
+            en: 'Open the brackets first by multiplying. Then get all the x’s on one side.',
+            es: 'Primero abre el paréntesis multiplicando y luego junta todas las x en un lado.',
             ta: 'முதலில் அடைப்பைத் திறந்து பெருக்குங்கள். பிறகு எல்லா x-களையும் ஒரு பக்கம் கொண்டு வாருங்கள்.',
           },
           solution: { en: '{eq}\n{expanded} = {right}\n{kx} = {rest}\nx = {x}' },
@@ -318,7 +318,7 @@ export const sevalaya: Pathway = {
             ta: 'x-ஐக் கண்டுபிடியுங்கள். விடையைப் பின்னமாகவோ தசம எண்ணாகவோ எழுதுங்கள்.\n{eq}',
           },
           hint: {
-            en: 'Multiply out the brackets and solve as usual. Enter the answer as a fraction like 7/3, or a decimal rounded to 2 places like 2.33.',
+            en: 'Open the brackets by multiplying, and solve as usual. Enter the answer as a fraction like 7/3, or a decimal rounded to 2 places like 2.33.',
             es: 'Multiplica el paréntesis y resuelve como siempre. Escribe la respuesta como fracción, por ejemplo 7/3, o como decimal redondeado a 2 cifras, por ejemplo 2.33.',
             ta: 'அடைப்பைத் திறந்து பெருக்கி, வழக்கம் போல் செய்யுங்கள். விடையை 7/3 மாதிரி பின்னமாகவோ, 2.33 மாதிரி இரண்டு தசம இடங்களுக்குத் தசம எண்ணாகவோ எழுதுங்கள்.',
           },
@@ -347,7 +347,7 @@ export const sevalaya: Pathway = {
           ta: 'தெரியாத எண்ணுக்கு ஒரு எழுத்தை வையுங்கள், பொதுவாக x. மற்ற அளவுகளை x வைத்து எழுதுங்கள். பிறகு கதையில் சொன்னதை வைத்து சமன்பாடு எழுதி, விடை காணுங்கள். கடைசியில் பாருங்கள்: விடை கதைக்குப் பொருந்துகிறதா?',
         },
         example: {
-          en: 'Three consecutive numbers add up to 48.\nCall them x, x + 1, x + 2.\nx + (x + 1) + (x + 2) = 48\n3x + 3 = 48, so x = 15.\nThe numbers are 15, 16, 17.',
+          en: 'Three numbers in a row add up to 48.\nCall them x, x + 1, x + 2.\nx + (x + 1) + (x + 2) = 48\n3x + 3 = 48, so x = 15.\nThe numbers are 15, 16, 17.',
           es: 'Tres números consecutivos suman 48.\nLlámalos x, x + 1, x + 2.\nx + (x + 1) + (x + 2) = 48\n3x + 3 = 48, así que x = 15.\nLos números son 15, 16, 17.',
           ta: 'அடுத்தடுத்த மூன்று எண்களைக் கூட்டினால் 48.\nஅவற்றை x, x + 1, x + 2 என்று வைப்போம்.\nx + (x + 1) + (x + 2) = 48\n3x + 3 = 48, அதனால் x = 15.\nஎண்கள்: 15, 16, 17.',
         },
@@ -361,14 +361,14 @@ export const sevalaya: Pathway = {
         {
           id: 'word-consecutive',
           gen(r) {
-            const n = r.int(-20, 40);
+            const n = r.int(1, 40);
             const s = 3 * n + 3;
             return { vars: { s: num(s), s3: num(s - 3), n: num(n) }, answer: frac(n) };
           },
           prompt: {
-            en: 'Three consecutive integers add up to {s}. What is the smallest of them?',
-            es: 'Tres enteros consecutivos suman {s}. ¿Cuál es el menor?',
-            ta: 'அடுத்தடுத்த மூன்று முழு எண்களைக் கூட்டினால் {s}. அவற்றில் சிறிய எண் எது?',
+            en: 'Three whole numbers in a row (like 7, 8, 9) add up to {s}. What is the smallest of the three?',
+            es: 'Tres números enteros seguidos (como 7, 8, 9) suman {s}. ¿Cuál es el más pequeño de los tres?',
+            ta: 'தொடர்ச்சியான மூன்று எண்களைக் (7, 8, 9 மாதிரி) கூட்டினால் {s}. அவற்றில் சிறிய எண் எது?',
           },
           hint: {
             en: 'Call them x, x + 1 and x + 2. Add them and set the total equal to {s}.',
@@ -386,7 +386,7 @@ export const sevalaya: Pathway = {
             return { vars: { k, s, s2: s - k, y }, answer: frac(y) };
           },
           prompt: {
-            en: 'Kavin is {k} years older than his sister Meena. Their ages add up to {s}. How old is Meena?',
+            en: 'Kavin is {k} years older than his sister Meena. If you add their two ages together, you get {s}. How old is Meena?',
             es: 'Kavin tiene {k} años más que su hermana Meena. Sus edades suman {s}. ¿Cuántos años tiene Meena?',
             ta: 'கவின், தங்கை மீனாவை விட {k} வயது பெரியவன். இருவர் வயதையும் கூட்டினால் {s}. மீனாவுக்கு என்ன வயது?',
           },
@@ -406,9 +406,9 @@ export const sevalaya: Pathway = {
             return { vars: { k, k2: 2 * k, p, rest: p - 2 * k, w }, answer: frac(w) };
           },
           prompt: {
-            en: 'A rectangle is {k} cm longer than it is wide. Its perimeter is {p} cm. How wide is it, in cm?',
-            es: 'Un rectángulo mide {k} cm más de largo que de ancho. Su perímetro es {p} cm. ¿Cuánto mide de ancho, en cm?',
-            ta: 'ஒரு செவ்வகத்தின் நீளம், அகலத்தை விட {k} செ.மீ. அதிகம். அதன் சுற்றளவு {p} செ.மீ. அகலம் எத்தனை செ.மீ.?',
+            en: 'The length of a rectangle is {k} cm more than its width. The distance all the way around it (its perimeter) is {p} cm. What is its width, in cm?',
+            es: 'El largo de un rectángulo mide {k} cm más que su ancho. La distancia a su alrededor (su perímetro) es {p} cm. ¿Cuánto mide de ancho, en cm?',
+            ta: 'ஒரு செவ்வகத்தின் நீளம், அகலத்தை விட {k} செ.மீ. அதிகம். அதைச் சுற்றி அளந்தால் (சுற்றளவு) {p} செ.மீ. அகலம் எத்தனை செ.மீ.?',
           },
           hint: {
             en: 'Let the width be x. The length is x + {k}. Perimeter = 2 × (length + width).',
@@ -428,9 +428,9 @@ export const sevalaya: Pathway = {
             return { vars: { a, b, q, r: r2, k: r2 - q, diff: b - a, w }, answer: frac(w) };
           },
           prompt: {
-            en: 'Priya has ₹{a} and saves ₹{r} each week. Arun has ₹{b} and saves ₹{q} each week. After how many weeks will they have the same amount?',
-            es: 'Priya tiene ₹{a} y ahorra ₹{r} cada semana. Arun tiene ₹{b} y ahorra ₹{q} cada semana. ¿Después de cuántas semanas tendrán la misma cantidad?',
-            ta: 'பிரியாவிடம் ₹{a} இருக்கிறது, ஒவ்வொரு வாரமும் ₹{r} சேர்க்கிறாள். அருணிடம் ₹{b} இருக்கிறது, ஒவ்வொரு வாரமும் ₹{q} சேர்க்கிறான். எத்தனை வாரம் கழித்து இருவரிடமும் ஒரே அளவு பணம் இருக்கும்?',
+            en: 'Priya has ₹{a}. Every week she gets ₹{r} from her job and keeps all of it. Arun has ₹{b}. Every week he gets ₹{q} from his job and keeps all of it. After how many weeks will they both have the same amount of money?',
+            es: 'Priya tiene ₹{a}. Cada semana gana ₹{r} en su trabajo y lo guarda todo. Arun tiene ₹{b}. Cada semana gana ₹{q} en su trabajo y lo guarda todo. ¿Después de cuántas semanas tendrán los dos la misma cantidad de dinero?',
+            ta: 'பிரியாவிடம் ₹{a} இருக்கிறது. ஒவ்வொரு வாரமும் வேலையில் ₹{r} சம்பாதித்து, முழுவதையும் வைத்துக்கொள்கிறாள். அருணிடம் ₹{b} இருக்கிறது. ஒவ்வொரு வாரமும் வேலையில் ₹{q} சம்பாதித்து, முழுவதையும் வைத்துக்கொள்கிறான். எத்தனை வாரம் கழித்து இருவரிடமும் ஒரே அளவு பணம் இருக்கும்?',
           },
           hint: {
             en: "After x weeks Priya has {a} + {r}x. Write Arun's amount the same way and set them equal.",
