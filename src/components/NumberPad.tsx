@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { press as onPress } from './press';
 
 const KEYS = ['7', '8', '9', '⌫', '4', '5', '6', '/', '1', '2', '3', '−', '0', '.'];
 
@@ -78,7 +79,7 @@ export function NumberPad(props: {
               key={label}
               type="button"
               className={i === active ? 'pad-field active' : 'pad-field'}
-              onClick={() => setActive(i)}
+              {...onPress(() => setActive(i))}
               aria-pressed={i === active}
               aria-label={label}
             >
@@ -90,11 +91,11 @@ export function NumberPad(props: {
       )}
       <div className="pad-grid">
         {KEYS.map((k) => (
-          <button key={k} type="button" className={k === '⌫' ? 'pad-key pad-key-muted' : 'pad-key'} onClick={() => press(k)} disabled={disabled} aria-label={k === '⌫' ? 'Delete' : k}>
+          <button key={k} type="button" className={k === '⌫' ? 'pad-key pad-key-muted' : 'pad-key'} {...onPress(() => press(k))} disabled={disabled} aria-label={k === '⌫' ? 'Delete' : k}>
             {k}
           </button>
         ))}
-        <button type="button" className="pad-key pad-submit" onClick={go} disabled={disabled || (!allFilled && !values[active])}>
+        <button type="button" className="pad-key pad-submit" {...onPress(go)} disabled={disabled || (!allFilled && !values[active])}>
           {allFilled || labels.length === 1 ? submitLabel : nextLabel}
         </button>
       </div>

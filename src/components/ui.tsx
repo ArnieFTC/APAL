@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { levelOf } from '../engine/progress';
 import { useI18n } from '../i18n';
+import { GlossText } from './Define';
 
 export function Toast({ messages }: { messages: string[] }) {
   const [shown, setShown] = useState<string[]>([]);
@@ -50,11 +51,15 @@ export function MathText({ text }: { text: string }) {
         if (cut > 0 && isMath(line.slice(cut + 2))) {
           return (
             <p key={i}>
-              {line.slice(0, cut + 1)} <span className="math">{line.slice(cut + 2)}</span>
+              <GlossText text={line.slice(0, cut + 1)} /> <span className="math">{line.slice(cut + 2)}</span>
             </p>
           );
         }
-        return <p key={i}>{line}</p>;
+        return (
+          <p key={i}>
+            <GlossText text={line} />
+          </p>
+        );
       })}
     </div>
   );

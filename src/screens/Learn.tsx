@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getSkill } from '../content';
 import type { Skill } from '../content/types';
 import { LevelBar, Loading, MathText } from '../components/ui';
+import { DefineButton, DefineProvider, DefinitionCard, GlossText } from '../components/Define';
 import {
   BADGES,
   CHECK_LENGTH,
@@ -207,9 +208,16 @@ export function SkillPage({ skillId }: { skillId: string }) {
 function Lesson({ skill }: { skill: Skill }) {
   const { t, tl } = useI18n();
   return (
+    <DefineProvider>
     <section className="card lesson">
-      <h2>{t('lesson')}</h2>
-      <p>{tl(skill.lesson.body)}</p>
+      <div className="lesson-head">
+        <h2>{t('lesson')}</h2>
+        <DefineButton />
+      </div>
+      <DefinitionCard />
+      <p>
+        <GlossText text={tl(skill.lesson.body)} />
+      </p>
       {skill.lesson.example.en && (
         <>
           <h3>{t('example')}</h3>
@@ -219,6 +227,7 @@ function Lesson({ skill }: { skill: Skill }) {
         </>
       )}
     </section>
+    </DefineProvider>
   );
 }
 

@@ -65,8 +65,8 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'First get rid of the number that is added or taken away: do the opposite (take it away, or add it) on both sides. Then divide both sides by the number in front of x.',
-            es: 'Primero quita el número que se suma o se resta: haz lo contrario (réstalo o súmalo) en ambos lados. Luego divide ambos lados entre el número que está delante de x.',
+            en: 'First move the constant: do the opposite on both sides. Then divide both sides by the number in front of x.',
+            es: 'Primero mueve la constante: haz lo contrario en ambos lados. Luego divide ambos lados entre el número que está delante de x.',
             ta: 'முதலில் தனி எண்ணை மறுபக்கம் கொண்டு செல்லுங்கள்: இரண்டு பக்கமும் அதற்கு எதிரானதைச் செய்யுங்கள். பிறகு x-க்கு முன் உள்ள எண்ணால் இரண்டு பக்கமும் வகுக்கவும்.',
           },
           solution: { en: '{eq}\n{ax} = {rhs}\nx = {x}' },
@@ -85,8 +85,8 @@ export const sevalaya: Pathway = {
           },
           prompt: { en: 'Solve for x:\n{eq}', es: 'Resuelve para x:\n{eq}', ta: 'x-ஐக் கண்டுபிடியுங்கள்:\n{eq}' },
           hint: {
-            en: 'First get rid of the number that is added or taken away, by doing the opposite on both sides. Then multiply both sides by {a} to undo the dividing.',
-            es: 'Primero quita el número que se suma o se resta, haciendo lo contrario en ambos lados. Luego multiplica ambos lados por {a} para deshacer la división.',
+            en: 'First move the constant by doing the opposite on both sides. Then multiply both sides by {a} to undo the dividing.',
+            es: 'Primero mueve la constante haciendo lo contrario en ambos lados. Luego multiplica ambos lados por {a} para deshacer la división.',
             ta: 'முதலில் தனி எண்ணை மறுபக்கம் கொண்டு செல்லுங்கள். பிறகு வகுத்ததை நீக்க, இரண்டு பக்கமும் {a}-ஆல் பெருக்கவும்.',
           },
           solution: { en: '{eq}\nx/{a} = {q}\nx = {x}' },
@@ -366,9 +366,9 @@ export const sevalaya: Pathway = {
             return { vars: { s: num(s), s3: num(s - 3), n: num(n) }, answer: frac(n) };
           },
           prompt: {
-            en: 'Three whole numbers in a row (like 7, 8, 9) add up to {s}. What is the smallest of the three?',
-            es: 'Tres números enteros seguidos (como 7, 8, 9) suman {s}. ¿Cuál es el más pequeño de los tres?',
-            ta: 'தொடர்ச்சியான மூன்று எண்களைக் (7, 8, 9 மாதிரி) கூட்டினால் {s}. அவற்றில் சிறிய எண் எது?',
+            en: 'Three consecutive whole numbers add up to {s}. What is the smallest of the three?',
+            es: 'Tres números enteros consecutivos suman {s}. ¿Cuál es el más pequeño de los tres?',
+            ta: 'தொடர்ச்சியான மூன்று முழு எண்களைக் கூட்டினால் {s}. அவற்றில் சிறிய எண் எது?',
           },
           hint: {
             en: 'Call them x, x + 1 and x + 2. Add them and set the total equal to {s}.',
@@ -406,9 +406,9 @@ export const sevalaya: Pathway = {
             return { vars: { k, k2: 2 * k, p, rest: p - 2 * k, w }, answer: frac(w) };
           },
           prompt: {
-            en: 'The length of a rectangle is {k} cm more than its width. The distance all the way around it (its perimeter) is {p} cm. What is its width, in cm?',
-            es: 'El largo de un rectángulo mide {k} cm más que su ancho. La distancia a su alrededor (su perímetro) es {p} cm. ¿Cuánto mide de ancho, en cm?',
-            ta: 'ஒரு செவ்வகத்தின் நீளம், அகலத்தை விட {k} செ.மீ. அதிகம். அதைச் சுற்றி அளந்தால் (சுற்றளவு) {p} செ.மீ. அகலம் எத்தனை செ.மீ.?',
+            en: 'The length of a rectangle is {k} cm more than its width. Its perimeter is {p} cm. What is its width, in cm?',
+            es: 'El largo de un rectángulo mide {k} cm más que su ancho. Su perímetro es {p} cm. ¿Cuánto mide de ancho, en cm?',
+            ta: 'ஒரு செவ்வகத்தின் நீளம், அகலத்தை விட {k} செ.மீ. அதிகம். அதன் சுற்றளவு {p} செ.மீ. அகலம் எத்தனை செ.மீ.?',
           },
           hint: {
             en: 'Let the width be x. The length is x + {k}. Perimeter = 2 × (length + width).',

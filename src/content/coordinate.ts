@@ -200,7 +200,7 @@ export const coordinateSkills: Skill[] = [
           return { vars: { P: pt(a, b), pa: p(a), pb: p(b), sum: c * c, d: c, a, b }, answer: R(c) };
         },
         prompt: {
-          en: 'How far is the point P{P} from the point O(0, 0)?',
+          en: 'How far is P{P} from the origin O(0, 0)?',
           es: '¿Qué tan lejos está P{P} del origen O(0, 0)?',
           ta: 'P{P} என்ற புள்ளி, ஆதிப்புள்ளி O(0, 0)-இலிருந்து எவ்வளவு தொலைவு?',
         },

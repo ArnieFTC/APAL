@@ -42,7 +42,7 @@ export const extraTemplates: Record<string, Template[]> = {
         return { vars: { n, b, c, rest: c - b, x }, answer: frac(x) };
       },
       prompt: {
-        en: 'A cricket team scored {c} runs. {b} of those runs were extras (wides and no-balls). The rest were scored by {n} batters, and each of them scored the same number of runs. How many runs did each batter score?',
+        en: 'A cricket team scored {c} runs. {b} of those runs were extras. The rest were scored by {n} batters, and each of them scored the same number of runs. How many runs did each batter score?',
         es: 'Un equipo de críquet anotó {c} carreras. {b} fueron extras. El resto lo hicieron {n} bateadores que anotaron lo mismo cada uno. ¿Cuántas carreras anotó cada bateador?',
         ta: 'ஒரு கிரிக்கெட் அணி {c} ரன் எடுத்தது. அதில் {b} ரன் உதிரி (extras). மீதி ரன்களை {n} பேட்ஸ்மேன்கள் ஆளுக்குச் சமமாக எடுத்தார்கள். ஒவ்வொருவரும் எத்தனை ரன்?',
       },

@@ -4,6 +4,7 @@ import type { Pathway } from '../content/types';
 import { MathText } from '../components/ui';
 import { fmtPoints, ranked, type ScoreRow } from '../engine/live';
 import { useI18n } from '../i18n';
+import { press } from '../components/press';
 import type { Category, Game, LiveQuestion } from '../store/live';
 
 export const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -37,7 +38,7 @@ export function Choices(props: {
       {choices.map((c, i) => {
         const state = correct == null ? (picked === i ? 'picked' : '') : i === correct ? 'right' : picked === i ? 'wrong' : 'faded';
         return (
-          <button key={i} type="button" className={`choice choice-${i} ${state}`} disabled={disabled || !onPick} onClick={() => onPick?.(i)}>
+          <button key={i} type="button" className={`choice choice-${i} ${state}`} disabled={disabled || !onPick} {...press(() => onPick?.(i))}>
             <span className="choice-letter">{LETTERS[i]}</span>
             <span className="choice-text">{c}</span>
             {counts && (
@@ -109,7 +110,7 @@ export function BoardGrid(props: { categories: Category[]; values: number[]; use
           const cell = `${ci}-${ri}`;
           const done = cell in used;
           return (
-            <button key={cell} type="button" className={done ? 'board-cell used' : 'board-cell'} disabled={done || !onPick} onClick={() => onPick?.(cell)}>
+            <button key={cell} type="button" className={done ? 'board-cell used' : 'board-cell'} disabled={done || !onPick} {...press(() => onPick?.(cell))}>
               {done ? used[cell] || '—' : v}
             </button>
           );

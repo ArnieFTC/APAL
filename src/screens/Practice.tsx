@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { press } from '../components/press';
 import { displayAnswer, getSkill, makeFirstQuestion, makeQuestion, makeSimilarQuestion } from '../content';
 import type { Question, Skill } from '../content/types';
 import { NumberPad } from '../components/NumberPad';
+import { DefineButton, DefineProvider, DefinitionCard, GlossText } from '../components/Define';
 import { MathText, Toast } from '../components/ui';
 import {
   CHECK_LENGTH,
@@ -35,7 +37,11 @@ export function PracticeRoute({ skillId, mode }: { skillId: string; mode: string
   const skill = getSkill(pathway, skillId);
   if (!skill || !MODES.includes(mode as Mode)) return <NotFound />;
   // Keyed so switching from practice to the check starts a fresh session.
-  return <Practice key={`${skillId}/${mode}`} skill={skill} mode={mode as Mode} />;
+  return (
+    <DefineProvider key={`${skillId}/${mode}`}>
+      <Practice skill={skill} mode={mode as Mode} />
+    </DefineProvider>
+  );
 }
 
 type Phase = 'answer' | 'hint' | 'resolved';
@@ -60,6 +66,9 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   const [readyForCheck, setReadyForCheck] = useState(false);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [toasts, setToasts] = useState<string[]>([]);
+  // A quick double tap on "Check" shouldn't also press the "Next" button that appears in its place.
+  const resolvedAt = useRef(0);
+  const settled = () => Date.now() - resolvedAt.current > 600;
 
   const badgeNames = (earned: Badge[]) => earned.map((b) => t('newHonor', { name: t(`badge_${b}` as StringKey) }));
 
@@ -100,6 +109,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
     const gained = outcome === 'first' ? (timed ? XP.checkOrReview : XP.practice) : outcome === 'second' ? XP.afterHint : 0;
     const p = apply((prev) => recordAnswer(prev, skill.id, mode, outcome, Date.now()), false, gained ? [t('xpGained', { n: gained })] : []);
     setPhase('resolved');
+    resolvedAt.current = Date.now();
     setFeedback(shown);
     if (outcome !== 'wrong') setScore((s) => s + 1);
     if (timed) return;
@@ -212,9 +222,10 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
         <MathText text={tl(question.template.prompt, question.vars)} />
       </section>
 
-      {!timed && phase !== 'resolved' && (
+      {phase !== 'resolved' && (
         <div className="help-buttons">
-          {phase === 'answer' && (
+          <DefineButton />
+          {!timed && phase === 'answer' && (
             <button
               className="button ghost"
               onClick={() => {
@@ -226,11 +237,14 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
               💡 {t('needHint')}
             </button>
           )}
-          <button className="button ghost" onClick={teach}>
-            📖 {t('teachMe')}
-          </button>
+          {!timed && (
+            <button className="button ghost" onClick={teach}>
+              📖 {t('teachMe')}
+            </button>
+          )}
         </div>
       )}
+      <DefinitionCard />
       {feedback && (
         <section className={`feedback feedback-${feedback}`} role="status">
           {feedback === 'invalid' && <p>{t('invalidAnswer')}</p>}
@@ -239,14 +253,18 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
               <p>
                 <strong>{feedback === 'hint' ? t('notYetHint') : t('hintTitle')}</strong>
               </p>
-              <p>{tl(question.template.hint, question.vars)}</p>
+              <p>
+                <GlossText text={tl(question.template.hint, question.vars)} />
+              </p>
             </>
           )}
           {feedback === 'taught' && (
             <>
               <p className="big-feedback">{t('teachTitle')}</p>
               <h3>1. {t('startHere')}</h3>
-              <p>{tl(question.template.hint, question.vars)}</p>
+              <p>
+                <GlossText text={tl(question.template.hint, question.vars)} />
+              </p>
               {solution && (
                 <>
                   <h3>2. {t('stepByStep')}</h3>
@@ -284,7 +302,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
             <strong>{t('readyForCheck', { n: STREAK_TO_CHECK })}</strong>
           </p>
           <div className="stack">
-            <button className="button primary big" onClick={() => go(`/do/${skill.id}/check`)}>
+            <button className="button primary big" {...press(() => settled() && go(`/do/${skill.id}/check`))}>
               {t('takeCheck')}
             </button>
             <button
@@ -299,7 +317,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
           </div>
         </section>
       ) : phase === 'resolved' ? (
-        <button className="button primary big next" onClick={next} autoFocus>
+        <button className="button primary big next" {...press(() => settled() && next())} autoFocus>
           {feedback === 'taught' ? t('tryLikeIt') : `${t('next')} →`}
         </button>
       ) : (

@@ -57,6 +57,11 @@
 }
 
 body {
+  /* Long presses shouldn't select or highlight text; typing boxes still can. */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
   margin: 0;
   background: var(--bg);
   line-height: 1.5;
@@ -1160,4 +1165,78 @@ select:focus-visible,
 }
 .feedback-taught h3 {
   margin-top: 12px;
+}
+
+input,
+textarea,
+.code,
+.roster {
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* Buttons that get tapped a lot: a finger sliding a little doesn't turn into a scroll and cancel the tap. */
+.pad-key,
+.pad-field,
+.choice,
+.board-cell {
+  touch-action: none;
+}
+.pad-key {
+  min-height: 60px;
+}
+.pad-key:active,
+.choice:active:not(:disabled),
+.board-cell:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.term {
+  font: inherit;
+  color: var(--ink);
+  background: #fff1c2;
+  border: none;
+  border-bottom: 2px dashed var(--gold);
+  border-radius: 4px;
+  padding: 0 3px;
+  margin: 0 1px;
+  cursor: pointer;
+}
+@media (prefers-color-scheme: dark) {
+  .term {
+    background: #4a3b0f;
+  }
+}
+.define-on {
+  background: var(--brand-soft);
+}
+.define-prompt {
+  text-align: center;
+  font-weight: 600;
+  color: var(--brand);
+  margin: 4px 0;
+}
+.definition {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: #fff8e1;
+  border: 1px solid var(--gold);
+}
+@media (prefers-color-scheme: dark) {
+  .definition {
+    background: #2e2610;
+  }
+}
+.definition p {
+  margin: 0;
+}
+.lesson-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 }

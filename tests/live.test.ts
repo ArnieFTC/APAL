@@ -115,3 +115,16 @@ describe("teacher's own questions", () => {
     expect(displayAnswer(q.template, q.answer)).toBe('(1/2, −4)');
   });
 });
+
+describe('Define a word', () => {
+  it('finds maths words in each language, including word endings', async () => {
+    const { glossPieces } = await import('../src/content/glossary');
+    const words = (text: string, lang: 'en' | 'es' | 'ta') =>
+      glossPieces(text, lang).flatMap((p) => (typeof p === 'string' ? [] : [`${p.word}=${p.entry.id}`]));
+    expect(words('Three consecutive whole numbers add up to 48.', 'en')).toEqual(['consecutive=consecutive', 'whole numbers=whole-number']);
+    expect(words('Find the square root, then the midpoint of the points.', 'en')).toEqual(['square root=square-root', 'midpoint=midpoint', 'points=point']);
+    expect(words('அதன் சமன்பாட்டை எழுதுங்கள். ஆரம் 5.', 'ta')).toEqual(['சமன்பாட்டை=equation', 'ஆரம்=radius']);
+    expect(words('நடுப்புள்ளி', 'ta')).toEqual(['நடுப்புள்ளி=midpoint']);
+    expect(words('Su perímetro es 20 cm.', 'es')).toEqual(['perímetro=perimeter']);
+  });
+});
