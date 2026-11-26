@@ -38,7 +38,8 @@ export function PracticeRoute({ skillId, mode }: { skillId: string; mode: string
 
 type Phase = 'answer' | 'hint' | 'resolved';
 type Feedback = 'invalid' | 'hint' | 'first' | 'second' | 'wrong' | null;
-type Summary = { title: string; note?: string; good: boolean };
+/** Message keys, not translated text, so the screen follows a language switch. */
+type Summary = { title: StringKey; vars?: Record<string, number>; note?: StringKey; good: boolean };
 
 function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   const { t, tl } = useI18n();
@@ -101,7 +102,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
     if (sp.streak >= STREAK_TO_CHECK) {
       if (mode === 'refresh') {
         apply((prev) => finishRefresh(prev, skill.id, Date.now()));
-        setSummary({ title: t('refreshDone'), good: true });
+        setSummary({ title: 'refreshDone', good: true });
       } else if (sp.status === 'learning') {
         setReadyForCheck(true);
       }
@@ -128,8 +129,8 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
       }, finalScore === CHECK_LENGTH);
       setSummary(
         passed
-          ? { title: t('checkPassed'), note: t('checkPassedNote'), good: true }
-          : { title: t('checkFailed', { score: finalScore, n: length }), note: t('checkFailedNote'), good: false },
+          ? { title: 'checkPassed', note: 'checkPassedNote', good: true }
+          : { title: 'checkFailed', vars: { score: finalScore, n: length }, note: 'checkFailedNote', good: false },
       );
     } else {
       let passed = false;
@@ -140,8 +141,8 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
       });
       setSummary(
         passed
-          ? { title: t('reviewPassed', { score: finalScore, n: length }), good: true }
-          : { title: t('reviewFailed', { score: finalScore, n: length }), note: t('reviewFailedNote'), good: false },
+          ? { title: 'reviewPassed', vars: { score: finalScore, n: length }, good: true }
+          : { title: 'reviewFailed', vars: { score: finalScore, n: length }, note: 'reviewFailedNote', good: false },
       );
     }
   }
@@ -154,8 +155,8 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
           <div className="summary-icon" aria-hidden>
             {summary.good ? '★' : '↻'}
           </div>
-          <h1>{summary.title}</h1>
-          {summary.note && <p>{summary.note}</p>}
+          <h1>{t(summary.title, summary.vars)}</h1>
+          {summary.note && <p>{t(summary.note)}</p>}
           <div className="stack">
             {!summary.good && mode === 'review' && (
               <button className="button primary big" onClick={() => go(`/do/${skill.id}/refresh`)}>
