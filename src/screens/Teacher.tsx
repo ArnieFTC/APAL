@@ -1,5 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { getPathway } from '../content';
+import { withCustom, type CustomContent } from '../content/custom';
+import { loadCustom } from '../store/custom';
+import { endGame, watchLiveGame } from '../store/live';
 import { Loading } from '../components/ui';
 import { levelOf, newProgress, skillOf, skillView } from '../engine/progress';
 import { DAY_MS } from '../engine/scheduler';
@@ -105,14 +108,22 @@ export function TeacherClass({ code }: { code: string }) {
   const { t, tl } = useI18n();
   const [cls, setCls] = useState<ClassInfo | null>(null);
   const [students, setStudents] = useState<StudentRow[] | null>(null);
+  const [custom, setCustom] = useState<CustomContent | null>(null);
+  const [liveId, setLiveId] = useState<string | null>(null);
 
   useEffect(() => {
     getClass(code).then(setCls, console.error);
-    return watchStudents(code, setStudents);
+    loadCustom(code).then(setCustom);
+    const stopLive = watchLiveGame(code, setLiveId);
+    const stopStudents = watchStudents(code, setStudents);
+    return () => {
+      stopLive();
+      stopStudents();
+    };
   }, [code]);
 
   if (!cls) return <Loading />;
-  const pathway = getPathway(cls.pathway);
+  const pathway = withCustom(getPathway(cls.pathway), custom);
   const now = Date.now();
 
   const lastActive = (ms?: number) => {
@@ -140,6 +151,41 @@ export function TeacherClass({ code }: { code: string }) {
         <input type="checkbox" checked={cls.leaderboardOn} onChange={(e) => toggleBoard(e.target.checked)} />
         <span>{t('showLeaderboard')}</span>
       </label>
+
+      <section className="card live-card">
+        <h2>{t('liveGames')}</h2>
+        <p className="muted">{t('liveGamesNote')}</p>
+        {liveId ? (
+          <>
+            <p>
+              <strong>{t('gameRunning')}</strong>
+            </p>
+            <div className="row-buttons">
+              <a className="button primary" href={href(`/class/${code}/live/${liveId}`)}>
+                {t('openGame')}
+              </a>
+              <button className="button" onClick={() => confirm(t('confirmEnd')) && endGame(code, liveId).catch(console.error)}>
+                {t('endGame')}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="game-options">
+            <a className="game-option" href={href(`/class/${code}/play/quiz`)}>
+              <strong>{t('quizGame')}</strong>
+              <span className="muted">{t('quizGameNote')}</span>
+            </a>
+            <a className="game-option" href={href(`/class/${code}/play/board`)}>
+              <strong>{t('boardGame')}</strong>
+              <span className="muted">{t('boardGameNote')}</span>
+            </a>
+          </div>
+        )}
+      </section>
+
+      <a className="button" href={href(`/class/${code}/questions`)}>
+        ✎ {t('editQuestions')}
+      </a>
 
       <h2>{t('students')}</h2>
       {!students ? (

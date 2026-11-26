@@ -41,6 +41,47 @@ service cloud.firestore {
         allow create, update: if signedIn() && request.auth.uid == uid && inClass(code);
         allow delete: if teaches(code) || (signedIn() && request.auth.uid == uid);
       }
+
+      // The teacher's own questions and topics. Students in the class can read them.
+      match /content/{docId} {
+        allow read: if teaches(code) || inClass(code);
+        allow write: if teaches(code);
+      }
+
+      // Live games. The teacher runs the game; students can only join, answer and pick.
+      match /games/{gameId} {
+        function game() {
+          return get(/databases/$(database)/documents/classes/$(code)/games/$(gameId)).data;
+        }
+        allow read: if teaches(code) || inClass(code);
+        allow create, update, delete: if teaches(code);
+
+        // Answer keys: teacher only.
+        match /host/{docId} {
+          allow read, write: if teaches(code);
+        }
+        match /players/{uid} {
+          allow read, delete: if teaches(code);
+          allow create, update: if signedIn() && request.auth.uid == uid && inClass(code);
+        }
+        // One answer per question, only while it is open, stamped with the server's clock.
+        match /answers/{uid} {
+          allow read: if teaches(code);
+          allow create, update: if signedIn() && request.auth.uid == uid && inClass(code)
+                                && game().status == 'question'
+                                && request.resource.data.round == game().round
+                                && request.resource.data.at == request.time
+                                && (resource == null || resource.data.round != game().round);
+        }
+        // Category board: only the student whose turn it is can pick.
+        match /picks/{uid} {
+          allow read: if teaches(code);
+          allow create, update: if signedIn() && request.auth.uid == uid && inClass(code)
+                                && game().status == 'pick'
+                                && game().chooser.uid == uid
+                                && request.resource.data.round == game().round;
+        }
+      }
     }
   }
 }

@@ -10,7 +10,8 @@ export type Vars = Record<string, string | number>;
 
 export interface Generated {
   vars: Vars;
-  answer: Rational;
+  /** One number, or several for a multi-part answer (a point, a circle's h, k and r²). */
+  answer: Rational | Rational[];
 }
 
 /**
@@ -24,10 +25,18 @@ export interface Template {
   hint: L;
   /** Worked steps, one per line. Usually pure math, so English-only is fine. */
   solution: L;
+  /** Labels for each answer box when the answer has more than one part, like ['x', 'y']. */
+  fields?: string[];
+  /** How the full answer is written, e.g. "(3, −2)". Defaults to the numbers themselves. */
+  display?(answer: Rational[]): string;
+  /** Likely wrong answers, used as choices in live games. Random nearby answers fill any gap. */
+  mistakes?(vars: Vars, answer: Rational[]): Rational[][];
 }
 
 export interface Skill {
   id: string;
+  /** Skills with the same unit are grouped together on the skill map. */
+  unit: L;
   title: L;
   summary: L;
   prereqs: string[];
@@ -47,5 +56,5 @@ export interface Question {
   skillId: string;
   template: Template;
   vars: Vars;
-  answer: Rational;
+  answer: Rational[];
 }

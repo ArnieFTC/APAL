@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getSkill, makeQuestion } from '../content';
+import { displayAnswer, getSkill, makeQuestion, sameAnswer } from '../content';
 import type { Question, Skill } from '../content/types';
 import { NumberPad } from '../components/NumberPad';
 import { MathText, Toast } from '../components/ui';
@@ -23,10 +23,12 @@ import { useI18n } from '../i18n';
 import type { StringKey } from '../i18n/en';
 import { useLearner } from '../learner';
 import { go, href } from '../router';
-import { equal, parseAnswer, show } from '../lib/rational';
+import { parseAnswer, type Rational } from '../lib/rational';
 import { NotFound } from './Learn';
 
 const MODES: Mode[] = ['practice', 'check', 'review', 'refresh'];
+
+const blank = (q: Question) => (q.template.fields ?? ['x']).map(() => '');
 
 export function PracticeRoute({ skillId, mode }: { skillId: string; mode: string }) {
   const { pathway } = useLearner();
@@ -48,7 +50,7 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   const length = mode === 'check' ? CHECK_LENGTH : REVIEW_LENGTH;
 
   const [question, setQuestion] = useState<Question>(() => makeQuestion(skill));
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string[]>(() => blank(question));
   const [phase, setPhase] = useState<Phase>('answer');
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [index, setIndex] = useState(0);
@@ -73,17 +75,17 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
     return next;
   }
 
-  function submit(raw: string) {
+  function submit(raw: string[]) {
     if (phase === 'resolved') return next();
-    const given = parseAnswer(raw);
-    if (!given) return setFeedback('invalid');
-    const right = equal(given, question.answer);
+    const given = raw.map(parseAnswer);
+    if (given.some((g) => !g)) return setFeedback('invalid');
+    const right = sameAnswer(given as Rational[], question.answer);
     if (right) return resolve(phase === 'hint' ? 'second' : 'first');
     if (!timed && phase === 'answer') {
       // First miss in practice: show a hint and let them try again.
       setPhase('hint');
       setFeedback('hint');
-      setInput('');
+      setInput(blank(question));
       return;
     }
     resolve('wrong');
@@ -112,8 +114,9 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
   function next() {
     if (timed && index + 1 >= length) return finish(score);
     setIndex((i) => i + 1);
-    setQuestion(makeQuestion(skill, question.template.id));
-    setInput('');
+    const q = makeQuestion(skill, question.template.id);
+    setQuestion(q);
+    setInput(blank(q));
     setPhase('answer');
     setFeedback(null);
   }
@@ -220,11 +223,13 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
           {feedback === 'wrong' && (
             <>
               <p>
-                <strong>{timed ? t('wrongNoHint') : t('hereIsHow')}</strong> {t('answerIs', { a: show(question.answer) })}
+                <strong>{timed ? t('wrongNoHint') : t('hereIsHow')}</strong> {t('answerIs', { a: displayAnswer(question.template, question.answer) })}
               </p>
-              <div className="worked">
-                <MathText text={solution} />
-              </div>
+              {solution && (
+                <div className="worked">
+                  <MathText text={solution} />
+                </div>
+              )}
             </>
           )}
         </section>
@@ -256,7 +261,10 @@ function Practice({ skill, mode }: { skill: Skill; mode: Mode }) {
         </button>
       ) : (
         <NumberPad
-          value={input}
+          key={`${index}-${phase}`}
+          values={input}
+          labels={question.template.fields ?? ['x']}
+          nextLabel={t('nextBox')}
           onChange={(v) => {
             setInput(v);
             if (feedback === 'invalid') setFeedback(null);

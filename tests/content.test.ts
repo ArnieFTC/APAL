@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { pathways } from '../src/content';
+import { asList, pathways } from '../src/content';
 import { seededRng } from '../src/lib/rng';
 
 const langs = ['en', 'es', 'ta'] as const;
@@ -18,7 +18,9 @@ for (const pathway of Object.values(pathways)) {
           const rng = seededRng(t.id.length * 7919);
           for (let i = 0; i < 500; i++) {
             const { vars, answer } = t.gen(rng);
-            expect(Number.isFinite(answer.n / answer.d)).toBe(true);
+            const parts = asList(answer);
+            expect(parts.length, `${t.id}: one answer per box`).toBe(t.fields?.length ?? 1);
+            for (const part of parts) expect(Number.isFinite(part.n / part.d)).toBe(true);
             for (const v of Object.values(vars)) expect(String(v)).not.toMatch(/NaN|undefined|Infinity/);
             for (const text of [t.prompt, t.hint, t.solution]) {
               for (const lang of langs) {

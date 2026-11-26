@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { getPathway } from './content';
 import type { Pathway } from './content/types';
 import type { Progress } from './engine/progress';
 import type { ClassInfo } from './store/classes';
@@ -21,12 +20,13 @@ export function LearnerProvider(props: {
   store: ProgressStore;
   cls: ClassInfo | null;
   uid: string | null;
-  pathwayId: string;
+  /** The class's pathway, with the teacher's own questions added. */
+  pathway: Pathway;
   loading: ReactNode;
   failed: ReactNode;
   children: ReactNode;
 }) {
-  const { store, cls, uid, pathwayId } = props;
+  const { store, cls, uid, pathway } = props;
   const [progress, setProgress] = useState<Progress | null>(null);
   const [failed, setFailed] = useState(false);
   const latest = useRef<Progress | null>(null);
@@ -63,7 +63,7 @@ export function LearnerProvider(props: {
   if (failed) return <>{props.failed}</>;
   if (!progress) return <>{props.loading}</>;
   return (
-    <Ctx.Provider value={{ progress, pathway: getPathway(pathwayId), cls, uid, update }}>{props.children}</Ctx.Provider>
+    <Ctx.Provider value={{ progress, pathway, cls, uid, update }}>{props.children}</Ctx.Provider>
   );
 }
 

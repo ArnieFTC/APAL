@@ -20,6 +20,7 @@ import type { StringKey } from '../i18n/en';
 import { useLearner } from '../learner';
 import { go, href } from '../router';
 import { loadLeaderboard, type BoardRow } from '../store/progressStore';
+import { watchLiveGame } from '../store/live';
 
 export const viewKey = (v: View) => `view_${v}` as StringKey;
 
@@ -42,6 +43,16 @@ export function SkillMap() {
     const s = getSkill(pathway, id);
     return s ? tl(s.title) : id;
   };
+  const [liveId, setLiveId] = useState<string | null>(null);
+  useEffect(() => (cls ? watchLiveGame(cls.code, setLiveId) : undefined), [cls]);
+
+  // Consecutive skills that share a unit are shown under one heading.
+  const units: { title: string; skills: Skill[] }[] = [];
+  for (const skill of pathway.skills) {
+    const title = tl(skill.unit);
+    if (units.at(-1)?.title === title) units.at(-1)!.skills.push(skill);
+    else units.push({ title, skills: [skill] });
+  }
 
   return (
     <main className="page narrow">
@@ -58,6 +69,16 @@ export function SkillMap() {
         )}
       </nav>
 
+      {liveId && (
+        <section className="card live-banner">
+          <h2>{t('liveNow')}</h2>
+          <p>{t('liveJoinNote')}</p>
+          <a className="button primary big" href={href(`/live/${liveId}`)}>
+            {t('joinGame')} →
+          </a>
+        </section>
+      )}
+
       {due.length > 0 && (
         <section className="card due-card">
           <h2>{t('keepSharp')}</h2>
@@ -72,9 +93,11 @@ export function SkillMap() {
         </section>
       )}
 
-      <h2 className="section-title">{tl(pathway.title)}</h2>
+      {units.map((unit) => (
+        <section key={unit.title}>
+      <h2 className="section-title">{unit.title}</h2>
       <ol className="skillpath">
-        {pathway.skills.map((skill) => {
+        {unit.skills.map((skill) => {
           const view = skillView(pathway, progress, skill.id, now);
           const sp = skillOf(progress, skill.id);
           const missing = skill.prereqs.filter((id) => skillOf(progress, id).masteredAt === null).map(titleOf);
@@ -95,6 +118,8 @@ export function SkillMap() {
           );
         })}
       </ol>
+        </section>
+      ))}
     </main>
   );
 }
@@ -185,10 +210,14 @@ function Lesson({ skill }: { skill: Skill }) {
     <section className="card lesson">
       <h2>{t('lesson')}</h2>
       <p>{tl(skill.lesson.body)}</p>
-      <h3>{t('example')}</h3>
-      <div className="worked">
-        <MathText text={tl(skill.lesson.example)} />
-      </div>
+      {skill.lesson.example.en && (
+        <>
+          <h3>{t('example')}</h3>
+          <div className="worked">
+            <MathText text={tl(skill.lesson.example)} />
+          </div>
+        </>
+      )}
     </section>
   );
 }

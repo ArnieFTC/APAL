@@ -1,6 +1,7 @@
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { DEFAULT_PATHWAY } from './content';
+import { DEFAULT_PATHWAY, getPathway } from './content';
+import { withCustom, type CustomContent } from './content/custom';
 import { Header } from './components/Header';
 import { Loading } from './components/ui';
 import { auth } from './firebase';
@@ -10,15 +11,19 @@ import { go, useRoute } from './router';
 import { GuestStart, StudentJoin, Welcome } from './screens/Entry';
 import { Honors, Leaderboard, SkillMap, SkillPage } from './screens/Learn';
 import { PracticeRoute } from './screens/Practice';
+import { LivePlay } from './screens/LivePlay';
+import { LiveHost, LiveSetup } from './screens/Live';
+import { CustomEditor } from './screens/CustomEditor';
 import { TeacherClass, TeacherHome, TeacherSignIn } from './screens/Teacher';
 import { classCodeOf, getClass, isTeacher, type ClassInfo } from './store/classes';
+import { loadCustom } from './store/custom';
 import { classStore, guestName, guestStore, isGuestActive, setGuestActive } from './store/progressStore';
 
 type Session =
   | { kind: 'loading' }
   | { kind: 'none' }
   | { kind: 'teacher'; user: User }
-  | { kind: 'student'; user: User; code: string; cls: ClassInfo | null }
+  | { kind: 'student'; user: User; code: string; cls: ClassInfo | null; custom: CustomContent | null }
   | { kind: 'guest' };
 
 export default function App() {
@@ -34,8 +39,8 @@ export default function App() {
         const code = classCodeOf(user);
         if (!code) return setSession({ kind: 'none' });
         // Offline, the class comes from the device's cache; if even that fails, carry on without it.
-        const cls = await getClass(code).catch(() => null);
-        setSession({ kind: 'student', user, code, cls });
+        const [cls, custom] = await Promise.all([getClass(code).catch(() => null), loadCustom(code)]);
+        setSession({ kind: 'student', user, code, cls, custom });
       }),
     [],
   );
@@ -70,11 +75,18 @@ export default function App() {
   }
 
   if (session.kind === 'teacher') {
-    const [first, code] = route;
+    const [first, code, sub, arg] = route;
+    let page = <TeacherHome />;
+    if (first === 'class' && code) {
+      if (sub === 'play' && (arg === 'quiz' || arg === 'board')) page = <LiveSetup key={arg} code={code} kind={arg} />;
+      else if (sub === 'live' && arg) page = <LiveHost key={arg} code={code} id={arg} />;
+      else if (sub === 'questions') page = <CustomEditor code={code} />;
+      else page = <TeacherClass code={code} />;
+    }
     return (
       <>
         <Header onSignOut={leave} />
-        {first === 'class' && code ? <TeacherClass code={code} /> : <TeacherHome />}
+        {page}
       </>
     );
   }
@@ -89,7 +101,7 @@ export default function App() {
           store={store}
           cls={cls}
           uid={session.kind === 'student' ? session.user.uid : null}
-          pathwayId={cls?.pathway ?? DEFAULT_PATHWAY}
+          pathway={withCustom(getPathway(cls?.pathway ?? DEFAULT_PATHWAY), session.kind === 'student' ? session.custom : null)}
           loading={<Loading />}
           failed={<LoadFailed />}
         >
@@ -119,6 +131,8 @@ function LearnerRoutes({ route }: { route: string[] }) {
       return <Honors />;
     case 'board':
       return <Leaderboard />;
+    case 'live':
+      return <LivePlay key={a} id={a} />;
     default:
       return <SkillMap />;
   }

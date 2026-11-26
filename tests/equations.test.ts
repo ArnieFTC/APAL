@@ -14,14 +14,15 @@ function evalSide(expr: string, x: number): number {
 }
 
 describe('equation templates', () => {
-  const eqTemplates = sevalaya.skills.flatMap((s) => s.templates).filter((t) => t.prompt.en.includes('{eq}'));
+  const eqTemplates = sevalaya.skills.flatMap((s) => s.templates).filter((t) => t.prompt.en.includes('{eq}') && !t.fields);
   for (const t of eqTemplates) {
     it(`${t.id}: answer satisfies the equation`, () => {
       const rng = seededRng(42);
       for (let i = 0; i < 500; i++) {
         const { vars, answer } = t.gen(rng);
         const [lhs, rhs] = String(vars.eq).split(' = ');
-        const x = answer.n / answer.d;
+        const [a] = Array.isArray(answer) ? answer : [answer];
+        const x = a.n / a.d;
         expect(evalSide(lhs, x)).toBeCloseTo(evalSide(rhs, x), 9);
       }
     });

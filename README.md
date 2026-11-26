@@ -11,7 +11,9 @@ Live site: https://arnieftc.github.io/APAL/
 - **Question banks.** Every question is a reviewed template whose numbers are generated fresh each time, like WebAssign. Answers can be integers, decimals or fractions (`5/2`).
 - **Spaced review.** Mastered skills come back after 2, 5, 12, 30 and 60 days. A pass moves up an interval; a miss sends the skill to a short refresh and steps the interval back one, never to zero. Two misses in a row flag the skill's prerequisites for the teacher. At most 3 reviews per session, and only 1 after a long break.
 - **Levels and honors.** XP for correct answers, mastery and reviews. The class leaderboard can be turned on or off by the teacher.
-- **Languages.** English, Spanish and Tamil. The Tamil and Spanish text is a first draft and needs a check by a fluent reader.
+- **Live games.** From a class page the teacher can host a **live quiz** (everyone answers the same multiple-choice question; 100 points for an instant right answer, 0.5 less per second, 0 if wrong; the teacher sets the seconds per question) or a **category board** (the teacher picks the categories; whoever answers right fastest picks the next square). Students see a "Join the game" button on their phone.
+- **Teachers' own questions.** Teachers can add questions to any skill, or make new topics with a short lesson. Their questions have fixed numbers and can have several answer boxes.
+- **Languages.** English, Spanish and Tamil. Tamil uses plain, everyday words, keeping the maths terms from Tamil Nadu textbooks. Tamil and Spanish still need a check by a fluent reader.
 
 ## Accounts
 
@@ -23,8 +25,8 @@ Live site: https://arnieftc.github.io/APAL/
 
 | Path | What's there |
 | --- | --- |
-| `src/content/` | Pathways, skills, lessons and question templates (`sevalaya.ts`) |
-| `src/engine/` | Mastery, spaced review, XP and honors. `scheduler.ts` has the review settings, including `REVIEW_SCALE` |
+| `src/content/` | Pathways, skills, lessons and question templates (`sevalaya.ts`, `coordinate.ts`, extra story questions in `extra.ts`, teachers' own questions in `custom.ts`) |
+| `src/engine/` | Mastery, spaced review, XP, honors and live-game scoring (`live.ts`). `scheduler.ts` has the review settings, including `REVIEW_SCALE` |
 | `src/store/` | Firebase classes and accounts, and progress storage (cloud or device-only) |
 | `src/i18n/` | Interface text in each language |
 | `src/screens/` | Learner and teacher screens |
